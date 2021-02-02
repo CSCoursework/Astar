@@ -1,46 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Astarfrompsuedo
 {
-    class Node
-    {
-        public int f { get; set; }
-        public int g { get; set; }
-        public int h { get; set; }
-        public List<Node> neighbours { get; set; }
-    }
+
 
     class methods
     {
-
-        static Node astar(Node startnode)
+        public static Node newnode(int x, int y) 
         {
-            List<Node> openlist = new List<Node>();
-            openlist.Add(startnode);
-            List<Node> closedlist = new List<Node>();
-
-
-            Node currentnode = new Node();
-            Node destination = new Node();
-            Node nextnode = new Node();
-            while (currentnode != destination)
-            {
-                nextnode = openlist[1];
-                foreach (var node in openlist)
-                {
-                    if (node.f < nextnode.f) { nextnode = node; }
-                }
-
-                closedlist.Add(currentnode);
-
-                foreach (var neighbour in currentnode.neighbours) {
-                    if (neighbour.g < currentnode.g && closedlist.Contains(neighbour)) { }
-                }
-
-
-            }
+            Node toreturn = new Node();
+            toreturn.X = x;
+            toreturn.Y = y;
+            return toreturn;
         }
+        public static List<Node> GetNeighbours(int x, int y, string[] map)
+        {
+            List<Node> possiblelocations = new List<Node>()
+            {newnode( x, y - 1 ),newnode(x,y + 1),newnode(x - 1,y),newnode (x + 1,y )};
+            return possiblelocations.Where(l => map[l.Y][l.X] == ' ' || map[l.Y][l.X] == 'B').ToList();
+        }
+
+        public static int GetH(int x, int y, int targetX, int targetY)
+        {
+            return (targetX - x) + (targetY - y);
+        }
+
     }
 }
